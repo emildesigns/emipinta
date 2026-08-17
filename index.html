@@ -351,6 +351,21 @@ section { padding: 100px 80px; }
 }
 .btn-cotizar:hover { background: var(--yellow-dark); transform: translateY(-1px); }
 
+/* Carrito de superficies */
+.cart-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 10px; gap: 10px;
+}
+.cart-item-info .ci-tipo { font-weight: 700; font-size: 13px; color: var(--text); }
+.cart-item-info .ci-detalle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.cart-item-price { font-weight: 700; color: var(--yellow); font-size: 14px; white-space: nowrap; }
+.cart-item-remove {
+  background: transparent; border: none; color: var(--muted); cursor: pointer;
+  font-size: 20px; line-height: 1; padding: 2px 6px; transition: color .2s;
+}
+.cart-item-remove:hover { color: var(--red); }
+
 .consulta-whatsapp {
   background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2);
   border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center;
@@ -514,19 +529,19 @@ footer p { font-size: 13px; color: var(--muted); }
       <span class="servicio-icon">🏠</span>
       <h3>Paredes Interiores</h3>
       <p>Pintura látex, satinado y enduido de paredes para ambientes residenciales y comerciales. Incluye preparación de superficie, masillado y aplicación prolija.</p>
-      <div class="precio-ref">Desde $5.500/m² · Mano de obra</div>
+      <div class="precio-ref">Desde $4.400/m² · Mano de obra</div>
     </div>
     <div class="servicio-card">
       <span class="servicio-icon">🏢</span>
       <h3>Fachadas & Exteriores</h3>
       <p>Pintura impermeabilizante, texturado y acabados especiales para exteriores. Protección contra humedad y condiciones climáticas.</p>
-      <div class="precio-ref">Desde $6.500/m² · Mano de obra</div>
+      <div class="precio-ref">Desde $5.200/m² · Mano de obra</div>
     </div>
     <div class="servicio-card">
       <span class="servicio-icon">🔲</span>
       <h3>Techos & Cielorrasos</h3>
       <p>Pintura de techos con látex blanco o colores especiales. Preparación, masillado y acabado perfecto en cielorrasos de todo tipo.</p>
-      <div class="precio-ref">Desde $6.000/m² · Mano de obra</div>
+      <div class="precio-ref">Desde $4.800/m² · Mano de obra</div>
     </div>
     <div class="servicio-card">
       <span class="servicio-icon">🔧</span>
@@ -576,21 +591,21 @@ footer p { font-size: 13px; color: var(--muted); }
         <div class="form-row">
           <div class="form-group">
             <label>Largo del ambiente (m)</label>
-            <input type="number" id="largo" placeholder="Ej: 5" min="1" step="0.1" oninput="calcular()">
+            <input type="number" id="largo" placeholder="Ej: 5" min="1" step="0.1" oninput="actualizarPreview()">
           </div>
           <div class="form-group">
             <label>Ancho del ambiente (m)</label>
-            <input type="number" id="ancho" placeholder="Ej: 4" min="1" step="0.1" oninput="calcular()">
+            <input type="number" id="ancho" placeholder="Ej: 4" min="1" step="0.1" oninput="actualizarPreview()">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Altura del techo (m)</label>
-            <input type="number" id="altura" placeholder="Ej: 2.7" min="1" step="0.1" value="2.7" oninput="calcular()">
+            <input type="number" id="altura" placeholder="Ej: 2.7" min="1" step="0.1" value="2.7" oninput="actualizarPreview()">
           </div>
           <div class="form-group">
             <label>Puertas + Ventanas</label>
-            <input type="number" id="aberturas" placeholder="Ej: 2" min="0" step="1" value="2" oninput="calcular()">
+            <input type="number" id="aberturas" placeholder="Ej: 2" min="0" step="1" value="2" oninput="actualizarPreview()">
           </div>
         </div>
       </div>
@@ -598,7 +613,7 @@ footer p { font-size: 13px; color: var(--muted); }
       <div id="dims-m2" style="display:none">
         <div class="form-group">
           <label>Superficie a pintar (m²)</label>
-          <input type="number" id="m2directo" placeholder="Ej: 40" min="1" step="0.5" oninput="calcular()">
+          <input type="number" id="m2directo" placeholder="Ej: 40" min="1" step="0.5" oninput="actualizarPreview()">
         </div>
       </div>
 
@@ -606,7 +621,7 @@ footer p { font-size: 13px; color: var(--muted); }
       <div class="form-section-title">ESTADO & PREPARACIÓN</div>
       <div class="form-group">
         <label>Estado de las superficies</label>
-        <select id="estado" onchange="calcular()">
+        <select id="estado" onchange="actualizarPreview()">
           <option value="bueno">Buen estado (solo pintura)</option>
           <option value="normal" selected>Estado normal (pequeñas reparaciones)</option>
           <option value="malo">Mal estado (enduido + reparaciones)</option>
@@ -617,7 +632,7 @@ footer p { font-size: 13px; color: var(--muted); }
       <div class="form-section-title">PINTURA</div>
       <div class="form-group">
         <label>Tipo de pintura</label>
-        <select id="tipoPintura" onchange="calcular()">
+        <select id="tipoPintura" onchange="actualizarPreview()">
           <option value="latex">Látex interior estándar</option>
           <option value="lavable">Látex lavable premium</option>
           <option value="acrilica">Acrílica exterior</option>
@@ -636,7 +651,7 @@ footer p { font-size: 13px; color: var(--muted); }
           <div class="swatch" style="background:#c0c0c0" data-color="Gris medio" onclick="selectColor(this)" title="Gris medio"></div>
           <div class="swatch" style="background:#2c2c2c" data-color="Gris oscuro" onclick="selectColor(this)" title="Gris oscuro"></div>
         </div>
-        <input type="text" id="colorTexto" placeholder="O escribí el color que querés..." style="margin-top:10px" oninput="calcular()">
+        <input type="text" id="colorTexto" placeholder="O escribí el color que querés..." style="margin-top:10px" oninput="actualizarPreview()">
       </div>
 
       <div class="form-group">
@@ -648,8 +663,8 @@ footer p { font-size: 13px; color: var(--muted); }
         </div>
       </div>
 
-      <button class="btn-cotizar" onclick="calcular()">CALCULAR PRESUPUESTO</button>
-      <div class="disclaimer">* Valores orientativos de mano de obra para Córdoba, Argentina (2026). No incluye materiales salvo que se indique. Para un presupuesto exacto, contactame.</div>
+      <button class="btn-cotizar" onclick="agregarAlCarrito()">➕ AGREGAR ESTA SUPERFICIE</button>
+      <div class="disclaimer">* Valores orientativos de mano de obra para Córdoba, Argentina (2026). No incluye materiales salvo que se indique. Podés agregar varias superficies (paredes, techo, exterior...) y se suman en un solo presupuesto. Para un presupuesto exacto, contactame.</div>
     </div>
 
     <!-- RESULTADO -->
@@ -660,6 +675,17 @@ footer p { font-size: 13px; color: var(--muted); }
           <div style="font-size:48px;margin-bottom:16px">🖌️</div>
           <p style="font-size:15px">Completá los datos<br>para ver tu cotización</p>
         </div>
+      </div>
+
+      <div id="cart-section" style="display:none">
+        <hr class="form-divider">
+        <div class="form-section-title">SUPERFICIES AGREGADAS</div>
+        <div id="cart-items"></div>
+        <div id="cart-total"></div>
+        <a id="cart-wa-btn" href="#" target="_blank" class="btn-cotizar" style="text-decoration:none;display:block;text-align:center;margin-top:20px">
+          📲 ENVIAR PRESUPUESTO POR WHATSAPP
+        </a>
+        <button class="btn-secondary" style="width:100%;text-align:center;margin-top:10px" onclick="vaciarCarrito()">Vaciar presupuesto</button>
       </div>
 
       <div class="consulta-whatsapp" id="consultaWA">
@@ -752,6 +778,12 @@ footer p { font-size: 13px; color: var(--muted); }
 let currentTipo = 'paredes';
 let currentManos = 2;
 let currentColor = 'Blanco roto';
+let carrito = [];
+
+const fmt = n => n.toLocaleString('es-AR', {style:'currency', currency:'ARS', maximumFractionDigits:0});
+const tipoLabel = {paredes:'Paredes interiores', techo:'Techo / Cielorraso', exterior:'Fachada exterior', completo:'Trabajo completo'};
+const estadoLabel = {bueno:'Buen estado', normal:'Estado normal', malo:'Mal estado'};
+const pinturaLabel = {latex:'Látex interior', lavable:'Látex lavable', acrilica:'Acrílica exterior', satinado:'Satinado'};
 
 // ── TIPO SUPERFICIE ──
 function setTipo(btn) {
@@ -765,7 +797,7 @@ function setTipo(btn) {
   } else {
     dimsP.style.display = 'block'; dimsM.style.display = 'none';
   }
-  calcular();
+  actualizarPreview();
 }
 
 // ── MANOS ──
@@ -773,7 +805,7 @@ function setManos(btn) {
   document.querySelectorAll('.mano-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentManos = parseInt(btn.dataset.manos);
-  calcular();
+  actualizarPreview();
 }
 
 // ── COLOR ──
@@ -782,17 +814,17 @@ function selectColor(el) {
   el.classList.add('active');
   currentColor = el.dataset.color;
   document.getElementById('colorTexto').value = '';
-  calcular();
+  actualizarPreview();
 }
 
-// ── CALCULAR ──
-function calcular() {
+// ── CALCULAR SUPERFICIE ACTUAL ──
+function computeItem() {
   // Precios base mano de obra por m² (Córdoba 2026)
   const precios = {
-    paredes:  { bueno: 5500, normal: 7000, malo: 10000 },
-    techo:    { bueno: 6000, normal: 7500, malo: 10500 },
-    exterior: { bueno: 6500, normal: 8000, malo: 11000 },
-    completo: { bueno: 11000, normal: 14000, malo: 19000 }
+    paredes:  { bueno: 4400, normal: 5600, malo: 8000 },
+    techo:    { bueno: 4800, normal: 6000, malo: 8400 },
+    exterior: { bueno: 5200, normal: 6400, malo: 8800 },
+    completo: { bueno: 8800, normal: 11200, malo: 15200 }
   };
 
   // Rendimiento pintura (m² por litro, 2 manos base)
@@ -833,14 +865,7 @@ function calcular() {
     }
   }
 
-  if (m2 <= 0) {
-    document.getElementById('result-content').innerHTML = `
-      <div style="text-align:center;padding:40px 0;color:var(--muted)">
-        <div style="font-size:48px;margin-bottom:16px">📐</div>
-        <p style="font-size:15px">Ingresá las dimensiones<br>para ver tu cotización</p>
-      </div>`;
-    return;
-  }
+  if (m2 <= 0) return null;
 
   // Precio m² con factor manos
   const precioM2Base = precios[currentTipo][estado];
@@ -857,50 +882,119 @@ function calcular() {
   const litrosCeiling = Math.ceil(litrosNecesarios);
   const costoPintura = litrosCeiling * costoLitro[tipoPintura];
 
-  const totalSoloMO = costoManoObraDescontado;
   const totalConMateriales = costoManoObraDescontado + costoPintura;
 
-  const fmt = n => n.toLocaleString('es-AR', {style:'currency', currency:'ARS', maximumFractionDigits:0});
+  return {
+    tipo: currentTipo, detalle, m2, estado, tipoPintura, colorFinal, manos: currentManos,
+    precioM2Final, costoManoObra, costoManoObraDescontado,
+    litrosCeiling, costoPintura, totalConMateriales
+  };
+}
 
-  const tipoLabel = {paredes:'Paredes interiores', techo:'Techo / Cielorraso', exterior:'Fachada exterior', completo:'Trabajo completo'};
-  const estadoLabel = {bueno:'Buen estado', normal:'Estado normal', malo:'Mal estado'};
-  const pinturaLabel = {latex:'Látex interior', lavable:'Látex lavable', acrilica:'Acrílica exterior', satinado:'Satinado'};
+// ── VISTA PREVIA ──
+function actualizarPreview() {
+  const item = computeItem();
+
+  if (!item) {
+    document.getElementById('result-content').innerHTML = `
+      <div style="text-align:center;padding:40px 0;color:var(--muted)">
+        <div style="font-size:48px;margin-bottom:16px">📐</div>
+        <p style="font-size:15px">Ingresá las dimensiones<br>para ver tu cotización</p>
+      </div>`;
+    return;
+  }
 
   document.getElementById('result-content').innerHTML = `
     <div class="descuento-banner">🎉 20% de descuento aplicado en mano de obra</div>
 
-    <div class="result-line"><span class="label">Superficie</span><span class="value">${tipoLabel[currentTipo]}</span></div>
-    <div class="result-line"><span class="label">Detalle</span><span class="value">${detalle}</span></div>
-    <div class="result-line"><span class="label">M² a pintar</span><span class="value" style="color:var(--yellow)">${m2.toFixed(1)} m²</span></div>
-    <div class="result-line"><span class="label">Estado</span><span class="value">${estadoLabel[estado]}</span></div>
-    <div class="result-line"><span class="label">Pintura</span><span class="value">${pinturaLabel[tipoPintura]}</span></div>
-    <div class="result-line"><span class="label">Color</span><span class="value">${colorFinal}</span></div>
-    <div class="result-line"><span class="label">Manos de pintura</span><span class="value">${currentManos} mano${currentManos>1?'s':''}</span></div>
-    <div class="result-line"><span class="label">Precio por m²</span><span class="value">${fmt(precioM2Final)}/m²</span></div>
-    <div class="result-line"><span class="label">Mano de obra</span><span class="value"><span class="precio-tachado">${fmt(costoManoObra)}</span>${fmt(costoManoObraDescontado)}</span></div>
+    <div class="result-line"><span class="label">Superficie</span><span class="value">${tipoLabel[item.tipo]}</span></div>
+    <div class="result-line"><span class="label">Detalle</span><span class="value">${item.detalle}</span></div>
+    <div class="result-line"><span class="label">M² a pintar</span><span class="value" style="color:var(--yellow)">${item.m2.toFixed(1)} m²</span></div>
+    <div class="result-line"><span class="label">Estado</span><span class="value">${estadoLabel[item.estado]}</span></div>
+    <div class="result-line"><span class="label">Pintura</span><span class="value">${pinturaLabel[item.tipoPintura]}</span></div>
+    <div class="result-line"><span class="label">Color</span><span class="value">${item.colorFinal}</span></div>
+    <div class="result-line"><span class="label">Manos de pintura</span><span class="value">${item.manos} mano${item.manos>1?'s':''}</span></div>
+    <div class="result-line"><span class="label">Precio por m²</span><span class="value">${fmt(item.precioM2Final)}/m²</span></div>
+    <div class="result-line"><span class="label">Mano de obra</span><span class="value"><span class="precio-tachado">${fmt(item.costoManoObra)}</span>${fmt(item.costoManoObraDescontado)}</span></div>
 
     <div class="result-total">
       <div class="total-label">💰 Solo mano de obra (20% off)</div>
-      <div class="total-num">${fmt(costoManoObraDescontado)}</div>
+      <div class="total-num">${fmt(item.costoManoObraDescontado)}</div>
       <div class="total-sub">Sin materiales · Vos comprás la pintura</div>
     </div>
 
     <div class="result-pintura">
       <div class="p-label">🪣 Pintura estimada necesaria</div>
-      <div class="p-val">${litrosCeiling} litros de ${pinturaLabel[tipoPintura]}</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:6px">Costo aprox. materiales: ${fmt(costoPintura)}</div>
+      <div class="p-val">${item.litrosCeiling} litros de ${pinturaLabel[item.tipoPintura]}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px">Costo aprox. materiales: ${fmt(item.costoPintura)}</div>
     </div>
 
     <div class="result-total" style="margin-top:16px;background:rgba(245,200,0,0.04)">
-      <div class="total-label">📦 Total con materiales (con descuento)</div>
-      <div class="total-num" style="font-size:40px">${fmt(totalConMateriales)}</div>
-      <div class="total-sub">Mano de obra con 20% off + pintura estimada</div>
+      <div class="total-label">📦 Total con materiales</div>
+      <div class="total-num" style="font-size:40px">${fmt(item.totalConMateriales)}</div>
+      <div class="total-sub">Mano de obra + pintura estimada</div>
     </div>
-
-    <a href="https://wa.me/5493513938817?text=Hola%20Emiliano!%20Cot%C3%ADc%C3%A9%20por%20la%20web%3A%20${encodeURIComponent(m2.toFixed(1)+'m² de '+tipoLabel[currentTipo]+', '+currentManos+' manos, color '+colorFinal+'. Presupuesto estimado (con 20% de descuento): '+fmt(totalConMateriales)+'. ¿Me podés confirmar el precio?')}" target="_blank" class="btn-cotizar" style="text-decoration:none;display:block;text-align:center;margin-top:20px">
-      📲 ENVIAR COTIZACIÓN POR WHATSAPP
-    </a>
   `;
+}
+
+// ── CARRITO: SUMAR VARIAS SUPERFICIES EN UN MISMO PRESUPUESTO ──
+function agregarAlCarrito() {
+  const item = computeItem();
+  if (!item) { actualizarPreview(); return; }
+  carrito.push(item);
+  renderCarrito();
+}
+
+function quitarDelCarrito(index) {
+  carrito.splice(index, 1);
+  renderCarrito();
+}
+
+function vaciarCarrito() {
+  carrito = [];
+  renderCarrito();
+}
+
+function renderCarrito() {
+  const section = document.getElementById('cart-section');
+  if (carrito.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+
+  document.getElementById('cart-items').innerHTML = carrito.map((item, i) => `
+    <div class="cart-item">
+      <div class="cart-item-info">
+        <div class="ci-tipo">${tipoLabel[item.tipo]}</div>
+        <div class="ci-detalle">${item.m2.toFixed(1)} m² · ${item.manos} mano${item.manos>1?'s':''} · ${item.colorFinal}</div>
+      </div>
+      <div class="cart-item-price">${fmt(item.totalConMateriales)}</div>
+      <button class="cart-item-remove" onclick="quitarDelCarrito(${i})" title="Quitar">×</button>
+    </div>
+  `).join('');
+
+  const totalManoObra = carrito.reduce((s, it) => s + it.costoManoObra, 0);
+  const totalManoObraDescontado = carrito.reduce((s, it) => s + it.costoManoObraDescontado, 0);
+  const totalPintura = carrito.reduce((s, it) => s + it.costoPintura, 0);
+  const totalGeneral = totalManoObraDescontado + totalPintura;
+
+  document.getElementById('cart-total').innerHTML = `
+    <div class="result-total">
+      <div class="total-label">💰 Mano de obra total (20% off)</div>
+      <div class="total-num"><span class="precio-tachado" style="font-size:20px">${fmt(totalManoObra)}</span>${fmt(totalManoObraDescontado)}</div>
+      <div class="total-sub">Sin materiales · Vos comprás la pintura</div>
+    </div>
+    <div class="result-total" style="margin-top:16px;background:rgba(245,200,0,0.04)">
+      <div class="total-label">📦 Total con materiales</div>
+      <div class="total-num" style="font-size:40px">${fmt(totalGeneral)}</div>
+      <div class="total-sub">Mano de obra + pintura estimada de todas las superficies</div>
+    </div>
+  `;
+
+  const detalleWA = carrito.map(item => `- ${item.m2.toFixed(1)}m² de ${tipoLabel[item.tipo]}, ${item.manos} manos, color ${item.colorFinal}: ${fmt(item.totalConMateriales)}`).join('\n');
+  const msg = `Hola Emiliano! Coticé este presupuesto por la web:\n${detalleWA}\nTotal estimado: ${fmt(totalGeneral)}. ¿Me podés confirmar el precio?`;
+  document.getElementById('cart-wa-btn').href = `https://wa.me/5493513938817?text=${encodeURIComponent(msg)}`;
 }
 
 // ── SHOW CONSULTA WA ──
