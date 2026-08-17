@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emiliano Pintor – Córdoba</title>
+<title>Emi Pinta – Córdoba</title>
 <meta name="description" content="Pintura profesional en Córdoba: interiores, exteriores, comercios y hogares. Cotizador online y presupuesto gratis con Emiliano.">
 <meta name="theme-color" content="#0f0f0f">
 
@@ -12,12 +12,12 @@
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://emildesigns.github.io/emipinta/">
-<meta property="og:title" content="Emiliano Pintor – Córdoba">
+<meta property="og:title" content="Emi Pinta – Córdoba">
 <meta property="og:description" content="Pintura profesional en Córdoba: interiores, exteriores, comercios y hogares. Cotizador online y presupuesto gratis.">
 <meta property="og:image" content="https://emildesigns.github.io/emipinta/portada.avif">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Emiliano Pintor – Córdoba">
+<meta name="twitter:title" content="Emi Pinta – Córdoba">
 <meta name="twitter:description" content="Pintura profesional en Córdoba: interiores, exteriores, comercios y hogares. Cotizador online y presupuesto gratis.">
 <meta name="twitter:image" content="https://emildesigns.github.io/emipinta/portada.avif">
 
@@ -334,6 +334,20 @@ section { padding: 100px 80px; }
 }
 .btn-cotizar:hover { background: var(--yellow-dark); transform: translateY(-1px); }
 
+/* Flecha guía hacia el precio */
+.scroll-hint {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  max-height: 0; opacity: 0; overflow: hidden; cursor: pointer;
+  color: var(--yellow); font-size: 12px; font-weight: 600;
+  transition: max-height .3s ease, opacity .3s ease, margin-top .3s ease;
+}
+.scroll-hint.show { max-height: 60px; opacity: 1; margin-top: 14px; }
+.scroll-hint svg { animation: scroll-hint-bounce 1s infinite; }
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
 /* Carrito de superficies */
 .cart-item {
   display: flex; justify-content: space-between; align-items: center;
@@ -454,7 +468,7 @@ footer p { font-size: 13px; color: var(--muted); }
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">EMILIANO<span> PINTOR</span></a>
+  <a href="#" class="nav-logo">EMI<span> PINTA</span></a>
   <ul class="nav-links">
     <li><a href="#cotizador">Cotizador</a></li>
     <li><a href="#contacto">Contacto</a></li>
@@ -582,6 +596,10 @@ footer p { font-size: 13px; color: var(--muted); }
       </div>
 
       <button class="btn-cotizar" onclick="agregarAlCarrito()">➕ AGREGAR ESTA SUPERFICIE</button>
+      <div id="scrollHint" class="scroll-hint" onclick="irAlPresupuesto()">
+        <span>Mirá tu precio actualizado</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
       <div class="disclaimer">* Valores orientativos de mano de obra para Córdoba, Argentina (2026). No incluye materiales salvo que se indique. Podés agregar varias superficies (paredes, techo, exterior...) y se suman en un solo presupuesto. Para un presupuesto exacto, contactame.</div>
     </div>
 
@@ -648,7 +666,7 @@ footer p { font-size: 13px; color: var(--muted); }
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">EMILIANO<span> PINTOR</span></div>
+  <div class="footer-logo">EMI<span> PINTA</span></div>
   <p style="color:var(--muted);font-size:13px">© 2026 · Córdoba, Argentina</p>
   <div class="footer-links">
     <a href="#cotizador">Cotizador</a>
@@ -831,6 +849,20 @@ function agregarAlCarrito() {
   if (!item) { actualizarPreview(); return; }
   carrito.push(item);
   renderCarrito();
+  mostrarScrollHint();
+}
+
+let scrollHintTimeout;
+function mostrarScrollHint() {
+  const hint = document.getElementById('scrollHint');
+  hint.classList.add('show');
+  clearTimeout(scrollHintTimeout);
+  scrollHintTimeout = setTimeout(() => hint.classList.remove('show'), 4000);
+}
+
+function irAlPresupuesto() {
+  document.getElementById('scrollHint').classList.remove('show');
+  document.getElementById('cart-section').scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
 function quitarDelCarrito(index) {
