@@ -4,6 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emiliano Pintor – Córdoba</title>
+<meta name="description" content="Pintura profesional en Córdoba: interiores, exteriores, comercios y hogares. Cotizador online y presupuesto gratis con Emiliano.">
+<meta name="theme-color" content="#0f0f0f">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖌️</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f0f0f'/><text x='50' y='58' font-size='60' text-anchor='middle'>🖌️</text></svg>">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://emildesigns.github.io/emipinta/">
+<meta property="og:title" content="Emiliano Pintor – Córdoba">
+<meta property="og:description" content="Pintura profesional en Córdoba: interiores, exteriores, comercios y hogares. Cotizador online y presupuesto gratis.">
+<meta property="og:image" content="https://emildesigns.github.io/emipinta/portada.avif">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Emiliano Pintor – Córdoba">
+<meta name="twitter:description" content="Pintura profesional en Córdoba: interiores, exteriores, comercios y hogares. Cotizador online y presupuesto gratis.">
+<meta name="twitter:image" content="https://emildesigns.github.io/emipinta/portada.avif">
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -167,43 +184,6 @@ section { padding: 100px 80px; }
 .section-title span { color: var(--yellow); }
 .section-desc { color: var(--muted); font-size: 16px; max-width: 560px; font-weight: 300; line-height: 1.8; }
 
-/* ── SERVICIOS ── */
-#servicios { background: var(--dark); padding-top: 64px; padding-bottom: 64px; }
-.servicios-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px; margin-top: 32px;
-}
-.servicio-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 20px 18px;
-  transition: transform .25s, border-color .25s, box-shadow .25s;
-  position: relative; overflow: hidden;
-}
-.servicio-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: var(--yellow); transform: scaleX(0); transform-origin: left;
-  transition: transform .3s ease;
-}
-.servicio-card:hover { transform: translateY(-4px); border-color: rgba(245,200,0,0.3); box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
-.servicio-card:hover::before { transform: scaleX(1); }
-.servicio-icon {
-  font-size: 24px; margin-bottom: 10px; display: block;
-}
-.servicio-card h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 19px; letter-spacing: 1px; margin-bottom: 6px;
-  color: var(--text);
-}
-.servicio-card p { color: var(--muted); font-size: 12.5px; line-height: 1.55; font-weight: 300; }
-.servicio-card .precio-ref {
-  margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);
-  font-size: 12px; color: var(--yellow); font-weight: 600;
-}
-.consulta-badge {
-  display: inline-block; background: rgba(245,200,0,0.1); border: 1px solid rgba(245,200,0,0.2);
-  color: var(--yellow); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-top: 10px;
-}
-
 /* ── COTIZADOR ── */
 #cotizador { background: var(--black); }
 .cotizador-wrap {
@@ -330,9 +310,12 @@ section { padding: 100px 80px; }
 }
 .result-total .total-num {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 52px; line-height: 1; color: var(--yellow);
+  font-size: 52px; line-height: 1.3; color: var(--yellow);
   letter-spacing: 1px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 6px 8px;
+  max-width: 100%;
 }
+.result-total .total-num.total-num-md { font-size: 40px; }
 .result-total .total-sub {
   font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5;
 }
@@ -355,8 +338,9 @@ section { padding: 100px 80px; }
 .cart-item {
   display: flex; justify-content: space-between; align-items: center;
   background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-  padding: 12px 14px; margin-bottom: 10px; gap: 10px;
+  padding: 12px 14px; margin-bottom: 10px; gap: 10px; flex-wrap: wrap;
 }
+.cart-item-info { flex: 1 1 auto; min-width: 0; }
 .cart-item-info .ci-tipo { font-weight: 700; font-size: 13px; color: var(--text); }
 .cart-item-info .ci-detalle { color: var(--muted); font-size: 12px; margin-top: 2px; }
 .cart-item-price { font-weight: 700; color: var(--yellow); font-size: 14px; white-space: nowrap; }
@@ -380,32 +364,6 @@ section { padding: 100px 80px; }
   transition: background .2s, transform .15s;
 }
 .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
-
-/* ── PROCESO ── */
-#proceso { background: var(--dark); padding-top: 56px; padding-bottom: 56px; }
-.proceso-steps {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0; margin-top: 32px; position: relative;
-}
-.proceso-steps::before {
-  content: ''; position: absolute;
-  top: 26px; left: 12.5%; right: 12.5%; height: 2px;
-  background: linear-gradient(to right, var(--border) 0%, var(--yellow) 100%);
-}
-.paso {
-  text-align: center; padding: 0 16px; position: relative; z-index: 1;
-}
-.paso-num {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: var(--card); border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 14px;
-  font-family: 'Bebas Neue', sans-serif; font-size: 20px;
-  color: var(--yellow); transition: all .3s;
-}
-.paso:hover .paso-num { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
-.paso h4 { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
-.paso p { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
 
 /* ── CONTACTO ── */
 #contacto { background: var(--black); }
@@ -475,12 +433,20 @@ footer p { font-size: 13px; color: var(--muted); }
   .hero-image { height: 50vh; }
   .cotizador-wrap { grid-template-columns: 1fr; }
   .cotizador-result { position: static; }
-  .proceso-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
-  .proceso-steps::before { display: none; }
   .contacto-grid { grid-template-columns: 1fr; }
   footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
   .hero-stats { gap: 24px; }
   .form-row { grid-template-columns: 1fr; }
+
+  .cotizador-form, .cotizador-result { padding: 24px 18px; }
+  .result-total { padding: 18px; }
+  .result-total .total-num { font-size: 34px; gap: 4px 6px; }
+  .result-total .total-num.total-num-md { font-size: 28px; }
+  .result-pintura { padding: 14px; }
+  .result-pintura .p-val { font-size: 22px; }
+  .result-line { font-size: 13px; padding: 11px 0; }
+  .descuento-banner { font-size: 13px; padding: 10px 14px; }
+  .cart-item { padding: 10px 12px; }
 }
 </style>
 </head>
@@ -490,9 +456,7 @@ footer p { font-size: 13px; color: var(--muted); }
 <nav>
   <a href="#" class="nav-logo">EMILIANO<span> PINTOR</span></a>
   <ul class="nav-links">
-    <li><a href="#servicios">Servicios</a></li>
     <li><a href="#cotizador">Cotizador</a></li>
-    <li><a href="#proceso">Proceso</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <a href="mailto:emicdh@gmail.com" class="nav-cta">📧 Escribime</a>
@@ -515,52 +479,6 @@ footer p { font-size: 13px; color: var(--muted); }
   </div>
   <div class="hero-image">
     <img src="portada.avif" alt="Emiliano, pintor profesional en Córdoba">
-  </div>
-</section>
-
-<!-- SERVICIOS -->
-<section id="servicios">
-  <div class="section-label">Lo que hago</div>
-  <h2 class="section-title">MIS <span>SERVICIOS</span></h2>
-  <p class="section-desc">Cada trabajo es único. Ofrezco soluciones de pintura para todo tipo de espacios con materiales de primera calidad.</p>
-
-  <div class="servicios-grid">
-    <div class="servicio-card">
-      <span class="servicio-icon">🏠</span>
-      <h3>Paredes Interiores</h3>
-      <p>Pintura látex, satinado y enduido de paredes para ambientes residenciales y comerciales. Incluye preparación de superficie, masillado y aplicación prolija.</p>
-      <div class="precio-ref">Desde $4.400/m² · Mano de obra</div>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icon">🏢</span>
-      <h3>Fachadas & Exteriores</h3>
-      <p>Pintura impermeabilizante, texturado y acabados especiales para exteriores. Protección contra humedad y condiciones climáticas.</p>
-      <div class="precio-ref">Desde $5.200/m² · Mano de obra</div>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icon">🔲</span>
-      <h3>Techos & Cielorrasos</h3>
-      <p>Pintura de techos con látex blanco o colores especiales. Preparación, masillado y acabado perfecto en cielorrasos de todo tipo.</p>
-      <div class="precio-ref">Desde $4.800/m² · Mano de obra</div>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icon">🔧</span>
-      <h3>Rejas & Metales</h3>
-      <p>Pintura anticorrosiva y esmalte sintético para rejas, portones, barandas y estructuras metálicas. Tratamiento previo incluido.</p>
-      <div class="consulta-badge">💬 Precio por consulta</div>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icon">🪜</span>
-      <h3>Escaleras & Barandas</h3>
-      <p>Pintura y terminaciones especiales para escaleras de madera, hormigón o metal. Barandas con esmalte de alta durabilidad.</p>
-      <div class="consulta-badge">💬 Precio por consulta</div>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icon">🏗️</span>
-      <h3>Locales Comerciales</h3>
-      <p>Pintura profesional para comercios, oficinas y espacios de trabajo. Cronograma flexible para no interrumpir tu actividad.</p>
-      <div class="precio-ref">Presupuesto a medida</div>
-    </div>
   </div>
 </section>
 
@@ -699,35 +617,6 @@ footer p { font-size: 13px; color: var(--muted); }
   </div>
 </section>
 
-<!-- PROCESO -->
-<section id="proceso">
-  <div class="section-label">Cómo trabajo</div>
-  <h2 class="section-title">MI <span>PROCESO</span></h2>
-  <p class="section-desc">Un método claro y prolijo para que tu proyecto salga perfecto desde el primer día.</p>
-  <div class="proceso-steps">
-    <div class="paso">
-      <div class="paso-num">01</div>
-      <h4>Consulta y visita</h4>
-      <p>Me contactás, acordamos una visita sin cargo para ver el espacio y entender tus necesidades.</p>
-    </div>
-    <div class="paso">
-      <div class="paso-num">02</div>
-      <h4>Presupuesto</h4>
-      <p>Te envío un presupuesto detallado por WhatsApp dentro de las 24hs. Sin sorpresas.</p>
-    </div>
-    <div class="paso">
-      <div class="paso-num">03</div>
-      <h4>Preparación</h4>
-      <p>Preparo las superficies: enduido, lijado y masillado para un acabado perfecto y duradero.</p>
-    </div>
-    <div class="paso">
-      <div class="paso-num">04</div>
-      <h4>Entrega final</h4>
-      <p>Pinto con prolijidad, limpio el espacio y te entrego el trabajo con garantía de calidad.</p>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACTO -->
 <section id="contacto">
   <div class="section-label">Hablemos</div>
@@ -762,7 +651,6 @@ footer p { font-size: 13px; color: var(--muted); }
   <div class="footer-logo">EMILIANO<span> PINTOR</span></div>
   <p style="color:var(--muted);font-size:13px">© 2026 · Córdoba, Argentina</p>
   <div class="footer-links">
-    <a href="#servicios">Servicios</a>
     <a href="#cotizador">Cotizador</a>
     <a href="#contacto">Contacto</a>
   </div>
@@ -931,7 +819,7 @@ function actualizarPreview() {
 
     <div class="result-total" style="margin-top:16px;background:rgba(245,200,0,0.04)">
       <div class="total-label">📦 Total con materiales</div>
-      <div class="total-num" style="font-size:40px">${fmt(item.totalConMateriales)}</div>
+      <div class="total-num total-num-md">${fmt(item.totalConMateriales)}</div>
       <div class="total-sub">Mano de obra + pintura estimada</div>
     </div>
   `;
@@ -982,12 +870,12 @@ function renderCarrito() {
   document.getElementById('cart-total').innerHTML = `
     <div class="result-total">
       <div class="total-label">💰 Mano de obra total (20% off)</div>
-      <div class="total-num"><span class="precio-tachado" style="font-size:20px">${fmt(totalManoObra)}</span>${fmt(totalManoObraDescontado)}</div>
+      <div class="total-num total-num-md"><span class="precio-tachado">${fmt(totalManoObra)}</span>${fmt(totalManoObraDescontado)}</div>
       <div class="total-sub">Sin materiales · Vos comprás la pintura</div>
     </div>
     <div class="result-total" style="margin-top:16px;background:rgba(245,200,0,0.04)">
       <div class="total-label">📦 Total con materiales</div>
-      <div class="total-num" style="font-size:40px">${fmt(totalGeneral)}</div>
+      <div class="total-num total-num-md">${fmt(totalGeneral)}</div>
       <div class="total-sub">Mano de obra + pintura estimada de todas las superficies</div>
     </div>
   `;
