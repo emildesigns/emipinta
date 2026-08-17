@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emiliano Pintor – Córdoba</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #F5C800;
+  --yellow-dark: #c9a200;
+  --black: #0f0f0f;
+  --dark: #161616;
+  --card: #1e1e1e;
+  --border: #2a2a2a;
+  --text: #e8e8e8;
+  --muted: #888;
+  --green: #25D366;
+  --red: #e74c3c;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--yellow); border-radius: 3px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 68px;
+  background: rgba(15,15,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 3px; color: var(--yellow);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--text); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--muted); text-decoration: none; font-size: 14px;
+  font-weight: 500; letter-spacing: 0.5px; transition: color .2s;
+}
+.nav-links a:hover { color: var(--yellow); }
+.nav-cta {
+  background: var(--yellow); color: var(--black);
+  padding: 10px 22px; border-radius: 6px;
+  font-weight: 700; font-size: 14px; text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.nav-cta:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 0;
+  padding-top: 68px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(245,200,0,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-text {
+  padding: 80px 60px 80px 80px;
+  position: relative; z-index: 2;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(245,200,0,0.12); border: 1px solid rgba(245,200,0,0.3);
+  color: var(--yellow); font-size: 12px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 7px 16px; border-radius: 30px; margin-bottom: 28px;
+}
+.hero-badge::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 8vw, 110px);
+  line-height: 0.95; letter-spacing: 2px;
+  color: var(--text); margin-bottom: 24px;
+}
+.hero h1 em { color: var(--yellow); font-style: normal; display: block; }
+.hero-desc {
+  color: var(--muted); font-size: 17px; line-height: 1.7;
+  max-width: 420px; margin-bottom: 40px; font-weight: 300;
+}
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--yellow); color: var(--black);
+  padding: 14px 32px; border-radius: 8px;
+  font-weight: 700; font-size: 15px; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 20px rgba(245,200,0,0.25);
+}
+.btn-primary:hover { background: var(--yellow-dark); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,200,0,0.35); }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  padding: 14px 32px; border-radius: 8px;
+  font-weight: 600; font-size: 15px; text-decoration: none;
+  border: 1.5px solid var(--border);
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--yellow); color: var(--yellow); }
+.hero-stats {
+  display: flex; gap: 40px; margin-top: 56px;
+  padding-top: 40px; border-top: 1px solid var(--border);
+}
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px; color: var(--yellow); line-height: 1;
+}
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 400; }
+
+.hero-image {
+  position: relative; height: 100vh;
+  overflow: hidden;
+}
+.hero-image img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center top;
+  display: block;
+}
+.hero-image::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right, var(--black) 0%, transparent 30%),
+              linear-gradient(to top, var(--black) 0%, transparent 25%);
+}
+.hero-image-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #222 50%, #1a1a1a 100%);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px; color: #333;
+}
+.hero-image-placeholder svg { width: 80px; height: 80px; opacity: 0.3; }
+
+/* ── SECTION BASE ── */
+section { padding: 100px 80px; }
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--yellow);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.section-label::before { content: ''; width: 30px; height: 2px; background: var(--yellow); }
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 5vw, 64px); line-height: 1; letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.section-title span { color: var(--yellow); }
+.section-desc { color: var(--muted); font-size: 16px; max-width: 560px; font-weight: 300; line-height: 1.8; }
+
+/* ── SERVICIOS ── */
+#servicios { background: var(--dark); }
+.servicios-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px; margin-top: 56px;
+}
+.servicio-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 36px 32px;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+  position: relative; overflow: hidden;
+}
+.servicio-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--yellow); transform: scaleX(0); transform-origin: left;
+  transition: transform .3s ease;
+}
+.servicio-card:hover { transform: translateY(-6px); border-color: rgba(245,200,0,0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+.servicio-card:hover::before { transform: scaleX(1); }
+.servicio-icon {
+  font-size: 36px; margin-bottom: 20px; display: block;
+}
+.servicio-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 1px; margin-bottom: 12px;
+  color: var(--text);
+}
+.servicio-card p { color: var(--muted); font-size: 14px; line-height: 1.7; font-weight: 300; }
+.servicio-card .precio-ref {
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--yellow); font-weight: 600;
+}
+.consulta-badge {
+  display: inline-block; background: rgba(245,200,0,0.1); border: 1px solid rgba(245,200,0,0.2);
+  color: var(--yellow); font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-top: 14px;
+}
+
+/* ── COTIZADOR ── */
+#cotizador { background: var(--black); }
+.cotizador-wrap {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; margin-top: 56px; align-items: start;
+}
+.cotizador-form {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 44px;
+}
+.cotizador-result {
+  background: var(--dark); border: 1px solid var(--border);
+  border-radius: 18px; padding: 44px;
+  position: sticky; top: 90px;
+}
+.form-group { margin-bottom: 24px; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.5px; color: var(--muted);
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 14px 18px;
+  background: var(--black); border: 1.5px solid var(--border);
+  border-radius: 10px; color: var(--text); font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color .2s, box-shadow .2s;
+  appearance: none;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(245,200,0,0.1);
+}
+.form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 42px; cursor: pointer; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+.form-section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 1px; color: var(--yellow);
+  margin-bottom: 20px; margin-top: 4px;
+}
+
+/* Colores swatches */
+.color-swatches {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px;
+}
+.swatch {
+  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  border: 2px solid transparent; transition: transform .15s, border-color .15s;
+  position: relative;
+}
+.swatch:hover { transform: scale(1.15); }
+.swatch.active { border-color: var(--yellow); transform: scale(1.15); }
+.swatch.active::after {
+  content: '✓'; position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Cantidad de manos */
+.manos-selector {
+  display: flex; gap: 12px; margin-top: 6px;
+}
+.mano-btn {
+  flex: 1; padding: 12px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: var(--black);
+  color: var(--muted); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .2s; text-align: center;
+  font-family: 'DM Sans', sans-serif;
+}
+.mano-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+.mano-btn.active { background: var(--yellow); border-color: var(--yellow); color: var(--black); }
+
+/* Tipo superficie */
+.tipo-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+.tipo-btn {
+  padding: 14px 12px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: var(--black);
+  color: var(--muted); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .2s; text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.tipo-btn span { font-size: 22px; }
+.tipo-btn:hover { border-color: var(--yellow); color: var(--text); }
+.tipo-btn.active { border-color: var(--yellow); color: var(--yellow); background: rgba(245,200,0,0.06); }
+
+/* Resultado */
+.result-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 1px; color: var(--muted);
+  margin-bottom: 30px;
+}
+.result-line {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+}
+.result-line:last-of-type { border-bottom: none; }
+.result-line .label { color: var(--muted); }
+.result-line .value { font-weight: 600; color: var(--text); }
+.result-total {
+  background: var(--card); border: 1px solid rgba(245,200,0,0.3);
+  border-radius: 12px; padding: 24px; margin-top: 24px; text-align: center;
+}
+.result-total .total-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--yellow); margin-bottom: 10px;
+}
+.result-total .total-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; line-height: 1; color: var(--yellow);
+  letter-spacing: 1px;
+}
+.result-total .total-sub {
+  font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5;
+}
+.result-pintura {
+  background: rgba(245,200,0,0.06); border: 1px solid rgba(245,200,0,0.15);
+  border-radius: 10px; padding: 16px; margin-top: 16px; text-align: center;
+}
+.result-pintura .p-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.result-pintura .p-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--text); margin-top: 4px; }
+
+.btn-cotizar {
+  width: 100%; padding: 16px; background: var(--yellow); color: var(--black);
+  border: none; border-radius: 10px; font-weight: 700; font-size: 16px;
+  cursor: pointer; margin-top: 28px; transition: background .2s, transform .15s;
+  font-family: 'DM Sans', sans-serif; letter-spacing: 0.3px;
+}
+.btn-cotizar:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+
+.consulta-whatsapp {
+  background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2);
+  border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center;
+  display: none;
+}
+.consulta-whatsapp p { font-size: 14px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--green); color: white;
+  padding: 12px 24px; border-radius: 8px;
+  font-weight: 700; font-size: 14px; text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+/* ── PROCESO ── */
+#proceso { background: var(--dark); }
+.proceso-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; margin-top: 56px; position: relative;
+}
+.proceso-steps::before {
+  content: ''; position: absolute;
+  top: 38px; left: 12.5%; right: 12.5%; height: 2px;
+  background: linear-gradient(to right, var(--border) 0%, var(--yellow) 100%);
+}
+.paso {
+  text-align: center; padding: 0 20px; position: relative; z-index: 1;
+}
+.paso-num {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: var(--card); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+  color: var(--yellow); transition: all .3s;
+}
+.paso:hover .paso-num { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+.paso h4 { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.paso p { font-size: 13px; color: var(--muted); line-height: 1.6; font-weight: 300; }
+
+/* ── CONTACTO ── */
+#contacto { background: var(--black); }
+.contacto-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; margin-top: 56px; align-items: start;
+}
+.contact-cards { display: flex; flex-direction: column; gap: 16px; }
+.contact-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px; display: flex;
+  align-items: center; gap: 20px; text-decoration: none;
+  transition: border-color .2s, transform .2s;
+}
+.contact-card:hover { border-color: var(--yellow); transform: translateX(6px); }
+.contact-icon {
+  width: 52px; height: 52px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.contact-icon.wa { background: rgba(37,211,102,0.12); }
+.contact-icon.mail { background: rgba(245,200,0,0.12); }
+.contact-card h4 { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text); }
+.contact-card p { font-size: 14px; color: var(--muted); }
+.zone-info {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 36px;
+}
+.zone-info h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 1px; margin-bottom: 16px; color: var(--yellow);
+}
+.zone-info p { color: var(--muted); font-size: 15px; line-height: 1.8; font-weight: 300; margin-bottom: 16px; }
+.zone-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.zone-tag {
+  background: rgba(245,200,0,0.08); border: 1px solid rgba(245,200,0,0.2);
+  color: var(--yellow); font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: 20px; letter-spacing: 0.5px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark); border-top: 1px solid var(--border);
+  padding: 40px 80px; display: flex;
+  align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 3px; color: var(--yellow);
+}
+.footer-logo span { color: var(--muted); }
+footer p { font-size: 13px; color: var(--muted); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--yellow); }
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  background: rgba(245,200,0,0.05); border: 1px solid rgba(245,200,0,0.15);
+  border-radius: 10px; padding: 14px 18px; margin-top: 20px;
+  font-size: 12px; color: var(--muted); line-height: 1.6; text-align: center;
+}
+
+/* ── FLOATING WA ── */
+.float-wa {
+  position: fixed; bottom: 32px; right: 32px; z-index: 200;
+  width: 60px; height: 60px; background: var(--green);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+  text-decoration: none; transition: transform .2s, box-shadow .2s;
+}
+.float-wa:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 10px 32px rgba(37,211,102,0.5); }
+.float-wa svg { width: 30px; height: 30px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  section { padding: 70px 24px; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-text { padding: 60px 24px 40px; }
+  .hero-image { height: 50vh; }
+  .cotizador-wrap { grid-template-columns: 1fr; }
+  .cotizador-result { position: static; }
+  .proceso-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .proceso-steps::before { display: none; }
+  .contacto-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+  .hero-stats { gap: 24px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">EMILIANO<span> PINTOR</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#cotizador">Cotizador</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="https://wa.me/5493513938817" class="nav-cta" target="_blank">💬 Escribime</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-text">
+    <div class="hero-badge">Disponible en Córdoba</div>
+    <h1>PINTURA<em>PROFESIONAL</em></h1>
+    <p class="hero-desc">Interiores, exteriores, comercios y hogares. Trabajo prolijo, rápido y con garantía. Presupuesto gratis y sin compromiso.</p>
+    <div class="hero-btns">
+      <a href="#cotizador" class="btn-primary">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19V7a2 2 0 012-2h12a2 2 0 012 2v12"/></svg>
+        Cotizá tu trabajo
+      </a>
+      <a href="https://wa.me/5493513938817" class="btn-secondary" target="_blank">Pedir presupuesto</a>
+    </div>
+
+  </div>
+  <div class="hero-image">
+    <div class="hero-image-placeholder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <span style="font-size:13px;color:#444">Foto de portada<br><small style="color:#333">Reemplazá con tu imagen</small></span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="section-label">Lo que hago</div>
+  <h2 class="section-title">MIS <span>SERVICIOS</span></h2>
+  <p class="section-desc">Cada trabajo es único. Ofrezco soluciones de pintura para todo tipo de espacios con materiales de primera calidad.</p>
+
+  <div class="servicios-grid">
+    <div class="servicio-card">
+      <span class="servicio-icon">🏠</span>
+      <h3>Paredes Interiores</h3>
+      <p>Pintura látex, satinado y enduido de paredes para ambientes residenciales y comerciales. Incluye preparación de superficie, masillado y aplicación prolija.</p>
+      <div class="precio-ref">Desde $5.500/m² · Mano de obra</div>
+    </div>
+    <div class="servicio-card">
+      <span class="servicio-icon">🏢</span>
+      <h3>Fachadas & Exteriores</h3>
+      <p>Pintura impermeabilizante, texturado y acabados especiales para exteriores. Protección contra humedad y condiciones climáticas.</p>
+      <div class="precio-ref">Desde $6.500/m² · Mano de obra</div>
+    </div>
+    <div class="servicio-card">
+      <span class="servicio-icon">🔲</span>
+      <h3>Techos & Cielorrasos</h3>
+      <p>Pintura de techos con látex blanco o colores especiales. Preparación, masillado y acabado perfecto en cielorrasos de todo tipo.</p>
+      <div class="precio-ref">Desde $6.000/m² · Mano de obra</div>
+    </div>
+    <div class="servicio-card">
+      <span class="servicio-icon">🔧</span>
+      <h3>Rejas & Metales</h3>
+      <p>Pintura anticorrosiva y esmalte sintético para rejas, portones, barandas y estructuras metálicas. Tratamiento previo incluido.</p>
+      <div class="consulta-badge">💬 Precio por consulta</div>
+    </div>
+    <div class="servicio-card">
+      <span class="servicio-icon">🪜</span>
+      <h3>Escaleras & Barandas</h3>
+      <p>Pintura y terminaciones especiales para escaleras de madera, hormigón o metal. Barandas con esmalte de alta durabilidad.</p>
+      <div class="consulta-badge">💬 Precio por consulta</div>
+    </div>
+    <div class="servicio-card">
+      <span class="servicio-icon">🏗️</span>
+      <h3>Locales Comerciales</h3>
+      <p>Pintura profesional para comercios, oficinas y espacios de trabajo. Cronograma flexible para no interrumpir tu actividad.</p>
+      <div class="precio-ref">Presupuesto a medida</div>
+    </div>
+  </div>
+</section>
+
+<!-- COTIZADOR -->
+<section id="cotizador">
+  <div class="section-label">Calculá tu trabajo</div>
+  <h2 class="section-title">COTIZADOR <span>ONLINE</span></h2>
+  <p class="section-desc">Ingresá las dimensiones de tu espacio y obtené un presupuesto orientativo al instante. Precios de mano de obra para Córdoba, 2026.</p>
+
+  <div class="cotizador-wrap">
+    <!-- FORM -->
+    <div class="cotizador-form">
+      <div class="form-section-title">TIPO DE SUPERFICIE</div>
+      <div class="form-group">
+        <label>¿Qué querés pintar?</label>
+        <div class="tipo-btns" id="tipoSup">
+          <button class="tipo-btn active" data-tipo="paredes" onclick="setTipo(this)"><span>🧱</span>Paredes</button>
+          <button class="tipo-btn" data-tipo="techo" onclick="setTipo(this)"><span>🔲</span>Techo</button>
+          <button class="tipo-btn" data-tipo="exterior" onclick="setTipo(this)"><span>🏢</span>Exterior</button>
+          <button class="tipo-btn" data-tipo="completo" onclick="setTipo(this)"><span>🏠</span>Completo</button>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <div class="form-section-title">DIMENSIONES</div>
+
+      <div id="dims-paredes">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Largo del ambiente (m)</label>
+            <input type="number" id="largo" placeholder="Ej: 5" min="1" step="0.1" oninput="calcular()">
+          </div>
+          <div class="form-group">
+            <label>Ancho del ambiente (m)</label>
+            <input type="number" id="ancho" placeholder="Ej: 4" min="1" step="0.1" oninput="calcular()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Altura del techo (m)</label>
+            <input type="number" id="altura" placeholder="Ej: 2.7" min="1" step="0.1" value="2.7" oninput="calcular()">
+          </div>
+          <div class="form-group">
+            <label>Puertas + Ventanas</label>
+            <input type="number" id="aberturas" placeholder="Ej: 2" min="0" step="1" value="2" oninput="calcular()">
+          </div>
+        </div>
+      </div>
+
+      <div id="dims-m2" style="display:none">
+        <div class="form-group">
+          <label>Superficie a pintar (m²)</label>
+          <input type="number" id="m2directo" placeholder="Ej: 40" min="1" step="0.5" oninput="calcular()">
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <div class="form-section-title">ESTADO & PREPARACIÓN</div>
+      <div class="form-group">
+        <label>Estado de las superficies</label>
+        <select id="estado" onchange="calcular()">
+          <option value="bueno">Buen estado (solo pintura)</option>
+          <option value="normal" selected>Estado normal (pequeñas reparaciones)</option>
+          <option value="malo">Mal estado (enduido + reparaciones)</option>
+        </select>
+      </div>
+
+      <hr class="form-divider">
+      <div class="form-section-title">PINTURA</div>
+      <div class="form-group">
+        <label>Tipo de pintura</label>
+        <select id="tipoPintura" onchange="calcular()">
+          <option value="latex">Látex interior estándar</option>
+          <option value="lavable">Látex lavable premium</option>
+          <option value="acrilica">Acrílica exterior</option>
+          <option value="satinado">Satinado / Semimate</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Color elegido</label>
+        <div class="color-swatches" id="colorSwatches">
+          <div class="swatch active" style="background:#f5f0e8" data-color="Blanco roto" onclick="selectColor(this)" title="Blanco roto"></div>
+          <div class="swatch" style="background:#ffffff;border:1px solid #333" data-color="Blanco puro" onclick="selectColor(this)" title="Blanco puro"></div>
+          <div class="swatch" style="background:#d4c5b0" data-color="Arena" onclick="selectColor(this)" title="Arena"></div>
+          <div class="swatch" style="background:#b8c4bb" data-color="Gris verde" onclick="selectColor(this)" title="Gris verde"></div>
+          <div class="swatch" style="background:#a8b8c8" data-color="Azul gris" onclick="selectColor(this)" title="Azul gris"></div>
+          <div class="swatch" style="background:#c8b8d0" data-color="Lila suave" onclick="selectColor(this)" title="Lila suave"></div>
+          <div class="swatch" style="background:#c0c0c0" data-color="Gris medio" onclick="selectColor(this)" title="Gris medio"></div>
+          <div class="swatch" style="background:#2c2c2c" data-color="Gris oscuro" onclick="selectColor(this)" title="Gris oscuro"></div>
+        </div>
+        <input type="text" id="colorTexto" placeholder="O escribí el color que querés..." style="margin-top:10px" oninput="calcular()">
+      </div>
+
+      <div class="form-group">
+        <label>Cantidad de manos</label>
+        <div class="manos-selector">
+          <button class="mano-btn" data-manos="1" onclick="setManos(this)">1 mano</button>
+          <button class="mano-btn active" data-manos="2" onclick="setManos(this)">2 manos ⭐</button>
+          <button class="mano-btn" data-manos="3" onclick="setManos(this)">3 manos</button>
+        </div>
+      </div>
+
+      <button class="btn-cotizar" onclick="calcular()">CALCULAR PRESUPUESTO</button>
+      <div class="disclaimer">* Valores orientativos de mano de obra para Córdoba, Argentina (2026). No incluye materiales salvo que se indique. Para un presupuesto exacto, contactame.</div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="cotizador-result">
+      <div class="result-title">📋 TU PRESUPUESTO</div>
+      <div id="result-content">
+        <div style="text-align:center;padding:40px 0;color:var(--muted)">
+          <div style="font-size:48px;margin-bottom:16px">🖌️</div>
+          <p style="font-size:15px">Completá los datos<br>para ver tu cotización</p>
+        </div>
+      </div>
+
+      <div class="consulta-whatsapp" id="consultaWA">
+        <p>¿Necesitás pintar rejas, barandas, escaleras u otros elementos especiales? Te cotizo por WhatsApp.</p>
+        <a href="https://wa.me/5493513938817?text=Hola%20Emiliano!%20Necesito%20un%20presupuesto%20para%20pintura." class="btn-wa" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="section-label">Cómo trabajo</div>
+  <h2 class="section-title">MI <span>PROCESO</span></h2>
+  <p class="section-desc">Un método claro y prolijo para que tu proyecto salga perfecto desde el primer día.</p>
+  <div class="proceso-steps">
+    <div class="paso">
+      <div class="paso-num">01</div>
+      <h4>Consulta y visita</h4>
+      <p>Me contactás, acordamos una visita sin cargo para ver el espacio y entender tus necesidades.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-num">02</div>
+      <h4>Presupuesto</h4>
+      <p>Te envío un presupuesto detallado por WhatsApp dentro de las 24hs. Sin sorpresas.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-num">03</div>
+      <h4>Preparación</h4>
+      <p>Preparo las superficies: enduido, lijado y masillado para un acabado perfecto y duradero.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-num">04</div>
+      <h4>Entrega final</h4>
+      <p>Pinto con prolijidad, limpio el espacio y te entrego el trabajo con garantía de calidad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-label">Hablemos</div>
+  <h2 class="section-title">CONTACTO <span>&</span> ZONA</h2>
+  <p class="section-desc">Trabajo en Córdoba Capital y zonas aledañas. Contactame para coordinar una visita sin cargo.</p>
+  <div class="contacto-grid">
+    <div class="contact-cards">
+      <a href="https://wa.me/5493513938817?text=Hola%20Emiliano!%20Quiero%20un%20presupuesto." class="contact-card" target="_blank">
+        <div class="contact-icon wa">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <div>
+          <h4>WhatsApp</h4>
+          <p>351 393 8817 · Respondo rápido</p>
+        </div>
+      </a>
+      <a href="mailto:emicdh@gmail.com" class="contact-card">
+        <div class="contact-icon mail">
+          <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#F5C800" stroke-width="1.8"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <h4>Email</h4>
+          <p>emicdh@gmail.com</p>
+        </div>
+      </a>
+    </div>
+    <div class="zone-info">
+      <h3>ZONA DE TRABAJO</h3>
+      <p>Trabajo en toda la ciudad de Córdoba y localidades cercanas. Para trabajos fuera del radio habitual, consultame y lo arreglamos.</p>
+      <div class="zone-tags">
+        <span class="zone-tag">Córdoba Capital</span>
+        <span class="zone-tag">Argüello</span>
+        <span class="zone-tag">Villa Allende</span>
+        <span class="zone-tag">Mendiolaza</span>
+        <span class="zone-tag">Río Ceballos</span>
+        <span class="zone-tag">La Calera</span>
+        <span class="zone-tag">Unquillo</span>
+        <span class="zone-tag">+ consultar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">EMILIANO<span> PINTOR</span></div>
+  <p style="color:var(--muted);font-size:13px">© 2026 · Córdoba, Argentina</p>
+  <div class="footer-links">
+    <a href="#servicios">Servicios</a>
+    <a href="#cotizador">Cotizador</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/5493513938817?text=Hola%20Emiliano!%20Quiero%20un%20presupuesto." class="float-wa" target="_blank" title="Escribime por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ── STATE ──
+let currentTipo = 'paredes';
+let currentManos = 2;
+let currentColor = 'Blanco roto';
+
+// ── TIPO SUPERFICIE ──
+function setTipo(btn) {
+  document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentTipo = btn.dataset.tipo;
+  const dimsP = document.getElementById('dims-paredes');
+  const dimsM = document.getElementById('dims-m2');
+  if (currentTipo === 'completo') {
+    dimsM.style.display = 'block'; dimsP.style.display = 'none';
+  } else {
+    dimsP.style.display = 'block'; dimsM.style.display = 'none';
+  }
+  calcular();
+}
+
+// ── MANOS ──
+function setManos(btn) {
+  document.querySelectorAll('.mano-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentManos = parseInt(btn.dataset.manos);
+  calcular();
+}
+
+// ── COLOR ──
+function selectColor(el) {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  currentColor = el.dataset.color;
+  document.getElementById('colorTexto').value = '';
+  calcular();
+}
+
+// ── CALCULAR ──
+function calcular() {
+  // Precios base mano de obra por m² (Córdoba 2026)
+  const precios = {
+    paredes:  { bueno: 5500, normal: 7000, malo: 10000 },
+    techo:    { bueno: 6000, normal: 7500, malo: 10500 },
+    exterior: { bueno: 6500, normal: 8000, malo: 11000 },
+    completo: { bueno: 11000, normal: 14000, malo: 19000 }
+  };
+
+  // Rendimiento pintura (m² por litro, 2 manos base)
+  const rendLitro = { latex: 12, lavable: 10, acrilica: 10, satinado: 11 };
+  // Costo aprox litro de pintura
+  const costoLitro = { latex: 4500, lavable: 7500, acrilica: 8000, satinado: 6500 };
+
+  const estado = document.getElementById('estado').value;
+  const tipoPintura = document.getElementById('tipoPintura').value;
+  const colorCustom = document.getElementById('colorTexto').value;
+  const colorFinal = colorCustom || currentColor;
+
+  let m2 = 0;
+  let detalle = '';
+
+  if (currentTipo === 'completo') {
+    const m2d = parseFloat(document.getElementById('m2directo').value) || 0;
+    m2 = m2d;
+    detalle = `${m2.toFixed(1)} m² totales`;
+  } else {
+    const largo = parseFloat(document.getElementById('largo').value) || 0;
+    const ancho = parseFloat(document.getElementById('ancho').value) || 0;
+    const altura = parseFloat(document.getElementById('altura').value) || 2.7;
+    const aberturas = parseInt(document.getElementById('aberturas').value) || 0;
+    const descAbertura = aberturas * 2; // ~2m² por abertura
+
+    if (currentTipo === 'paredes') {
+      const perim = 2 * (largo + ancho);
+      m2 = Math.max(0, perim * altura - descAbertura);
+      detalle = `${largo}×${ancho}m, h:${altura}m − ${aberturas} aberturas`;
+    } else if (currentTipo === 'techo') {
+      m2 = largo * ancho;
+      detalle = `${largo}×${ancho}m = ${m2.toFixed(1)} m²`;
+    } else if (currentTipo === 'exterior') {
+      const perim = 2 * (largo + ancho);
+      m2 = Math.max(0, perim * altura - descAbertura * 1.5);
+      detalle = `${largo}×${ancho}m, h:${altura}m`;
+    }
+  }
+
+  if (m2 <= 0) {
+    document.getElementById('result-content').innerHTML = `
+      <div style="text-align:center;padding:40px 0;color:var(--muted)">
+        <div style="font-size:48px;margin-bottom:16px">📐</div>
+        <p style="font-size:15px">Ingresá las dimensiones<br>para ver tu cotización</p>
+      </div>`;
+    return;
+  }
+
+  // Precio m² con factor manos
+  const precioM2Base = precios[currentTipo][estado];
+  const factorManos = currentManos === 1 ? 0.65 : currentManos === 2 ? 1 : 1.35;
+  const precioM2Final = precioM2Base * factorManos;
+  const costoManoObra = m2 * precioM2Final;
+
+  // Pintura
+  const litrosNecesarios = (m2 / rendLitro[tipoPintura]) * currentManos;
+  const litrosCeiling = Math.ceil(litrosNecesarios);
+  const costoPintura = litrosCeiling * costoLitro[tipoPintura];
+
+  const totalSoloMO = costoManoObra;
+  const totalConMateriales = costoManoObra + costoPintura;
+
+  const fmt = n => n.toLocaleString('es-AR', {style:'currency', currency:'ARS', maximumFractionDigits:0});
+
+  const tipoLabel = {paredes:'Paredes interiores', techo:'Techo / Cielorraso', exterior:'Fachada exterior', completo:'Trabajo completo'};
+  const estadoLabel = {bueno:'Buen estado', normal:'Estado normal', malo:'Mal estado'};
+  const pinturaLabel = {latex:'Látex interior', lavable:'Látex lavable', acrilica:'Acrílica exterior', satinado:'Satinado'};
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-line"><span class="label">Superficie</span><span class="value">${tipoLabel[currentTipo]}</span></div>
+    <div class="result-line"><span class="label">Detalle</span><span class="value">${detalle}</span></div>
+    <div class="result-line"><span class="label">M² a pintar</span><span class="value" style="color:var(--yellow)">${m2.toFixed(1)} m²</span></div>
+    <div class="result-line"><span class="label">Estado</span><span class="value">${estadoLabel[estado]}</span></div>
+    <div class="result-line"><span class="label">Pintura</span><span class="value">${pinturaLabel[tipoPintura]}</span></div>
+    <div class="result-line"><span class="label">Color</span><span class="value">${colorFinal}</span></div>
+    <div class="result-line"><span class="label">Manos de pintura</span><span class="value">${currentManos} mano${currentManos>1?'s':''}</span></div>
+    <div class="result-line"><span class="label">Precio por m²</span><span class="value">${fmt(precioM2Final)}/m²</span></div>
+    <div class="result-line"><span class="label">Mano de obra</span><span class="value">${fmt(costoManoObra)}</span></div>
+
+    <div class="result-total">
+      <div class="total-label">💰 Solo mano de obra</div>
+      <div class="total-num">${fmt(costoManoObra)}</div>
+      <div class="total-sub">Sin materiales · Vos comprás la pintura</div>
+    </div>
+
+    <div class="result-pintura">
+      <div class="p-label">🪣 Pintura estimada necesaria</div>
+      <div class="p-val">${litrosCeiling} litros de ${pinturaLabel[tipoPintura]}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px">Costo aprox. materiales: ${fmt(costoPintura)}</div>
+    </div>
+
+    <div class="result-total" style="margin-top:16px;background:rgba(245,200,0,0.04)">
+      <div class="total-label">📦 Total con materiales</div>
+      <div class="total-num" style="font-size:40px">${fmt(totalConMateriales)}</div>
+      <div class="total-sub">Mano de obra + pintura estimada</div>
+    </div>
+
+    <a href="https://wa.me/5493513938817?text=Hola%20Emiliano!%20Cot%C3%ADc%C3%A9%20por%20la%20web%3A%20${encodeURIComponent(m2.toFixed(1)+'m² de '+tipoLabel[currentTipo]+', '+currentManos+' manos, color '+colorFinal+'. Presupuesto estimado: '+fmt(totalConMateriales)+'. ¿Me podés confirmar el precio?')}" target="_blank" class="btn-cotizar" style="text-decoration:none;display:block;text-align:center;margin-top:20px">
+      📲 ENVIAR COTIZACIÓN POR WHATSAPP
+    </a>
+  `;
+}
+
+// ── SHOW CONSULTA WA ──
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.getElementById('consultaWA').style.display = 'block';
+  }, 500);
+});
+
+// ── SMOOTH NAV ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+</script>
+</body>
+</html>
