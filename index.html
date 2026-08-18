@@ -334,19 +334,17 @@ section { padding: 100px 80px; }
 }
 .btn-cotizar:hover { background: var(--yellow-dark); transform: translateY(-1px); }
 
-/* Flecha guía hacia el precio */
-.scroll-hint {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  max-height: 0; opacity: 0; overflow: hidden; cursor: pointer;
-  color: var(--yellow); font-size: 12px; font-weight: 600;
-  transition: max-height .3s ease, opacity .3s ease, margin-top .3s ease;
+/* Botón "ir a agregar superficie" */
+.btn-jump {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 12px; margin-bottom: 4px;
+  background: transparent; border: 1.5px dashed var(--border);
+  border-radius: 10px; color: var(--yellow); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.3px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color .2s, background .2s;
 }
-.scroll-hint.show { max-height: 60px; opacity: 1; margin-top: 14px; }
-.scroll-hint svg { animation: scroll-hint-bounce 1s infinite; }
-@keyframes scroll-hint-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
-}
+.btn-jump:hover { border-color: var(--yellow); background: rgba(245,200,0,0.06); }
 
 /* Carrito de superficies */
 .cart-item {
@@ -516,6 +514,11 @@ footer p { font-size: 13px; color: var(--muted); }
         </div>
       </div>
 
+      <button type="button" class="btn-jump" onclick="irAAgregarSuperficie()">
+        IR A AGREGAR SUPERFICIE
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </button>
+
       <hr class="form-divider">
       <div class="form-section-title">DIMENSIONES</div>
 
@@ -595,11 +598,7 @@ footer p { font-size: 13px; color: var(--muted); }
         </div>
       </div>
 
-      <button class="btn-cotizar" onclick="agregarAlCarrito()">➕ AGREGAR ESTA SUPERFICIE</button>
-      <div id="scrollHint" class="scroll-hint" onclick="irAlPresupuesto()">
-        <span>Mirá tu precio actualizado</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-      </div>
+      <button id="addSurfaceBtn" class="btn-cotizar" onclick="agregarAlCarrito()">➕ AGREGAR ESTA SUPERFICIE</button>
       <div class="disclaimer">* Valores orientativos de mano de obra para Córdoba, Argentina (2026). No incluye materiales salvo que se indique. Podés agregar varias superficies (paredes, techo, exterior...) y se suman en un solo presupuesto. Para un presupuesto exacto, contactame.</div>
     </div>
 
@@ -849,20 +848,10 @@ function agregarAlCarrito() {
   if (!item) { actualizarPreview(); return; }
   carrito.push(item);
   renderCarrito();
-  mostrarScrollHint();
 }
 
-let scrollHintTimeout;
-function mostrarScrollHint() {
-  const hint = document.getElementById('scrollHint');
-  hint.classList.add('show');
-  clearTimeout(scrollHintTimeout);
-  scrollHintTimeout = setTimeout(() => hint.classList.remove('show'), 4000);
-}
-
-function irAlPresupuesto() {
-  document.getElementById('scrollHint').classList.remove('show');
-  document.getElementById('cart-section').scrollIntoView({behavior: 'smooth', block: 'start'});
+function irAAgregarSuperficie() {
+  document.getElementById('addSurfaceBtn').scrollIntoView({behavior: 'smooth', block: 'center'});
 }
 
 function quitarDelCarrito(index) {
@@ -873,6 +862,14 @@ function quitarDelCarrito(index) {
 function vaciarCarrito() {
   carrito = [];
   renderCarrito();
+
+  document.getElementById('largo').value = '';
+  document.getElementById('ancho').value = '';
+  document.getElementById('altura').value = '2.7';
+  document.getElementById('aberturas').value = '2';
+  document.getElementById('m2directo').value = '';
+  document.getElementById('colorTexto').value = '';
+  actualizarPreview();
 }
 
 function renderCarrito() {
