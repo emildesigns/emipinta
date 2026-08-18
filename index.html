@@ -702,7 +702,17 @@ function setTipo(btn) {
   } else {
     dimsP.style.display = 'block'; dimsM.style.display = 'none';
   }
+  resetDimensiones();
   actualizarPreview();
+}
+
+// ── RESET DIMENSIONES ──
+function resetDimensiones() {
+  document.getElementById('largo').value = '';
+  document.getElementById('ancho').value = '';
+  document.getElementById('altura').value = '2.7';
+  document.getElementById('aberturas').value = '2';
+  document.getElementById('m2directo').value = '';
 }
 
 // ── MANOS ──
@@ -863,11 +873,7 @@ function vaciarCarrito() {
   carrito = [];
   renderCarrito();
 
-  document.getElementById('largo').value = '';
-  document.getElementById('ancho').value = '';
-  document.getElementById('altura').value = '2.7';
-  document.getElementById('aberturas').value = '2';
-  document.getElementById('m2directo').value = '';
+  resetDimensiones();
   document.getElementById('colorTexto').value = '';
   actualizarPreview();
 }
