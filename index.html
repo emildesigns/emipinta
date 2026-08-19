@@ -361,6 +361,30 @@ section { padding: 100px 80px; }
   font-size: 20px; line-height: 1; padding: 2px 6px; transition: color .2s;
 }
 .cart-item-remove:hover { color: var(--red); }
+.cart-item { cursor: pointer; transition: border-color .2s, background .2s; }
+.cart-item:hover { border-color: var(--yellow); }
+.cart-item-detalle-full {
+  flex: 1 1 100%; margin-top: 8px; padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+.cart-item-detalle-full .cidf-line {
+  display: flex; justify-content: space-between;
+  font-size: 12px; padding: 4px 0; color: var(--muted);
+}
+.cart-item-detalle-full .cidf-line span:last-child { color: var(--text); font-weight: 600; }
+
+/* Toast "Agregado" */
+.toast-agregado {
+  position: fixed; left: 50%; bottom: 40px; z-index: 300;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--yellow); color: var(--black);
+  font-weight: 700; font-size: 14px; letter-spacing: 0.3px;
+  padding: 14px 30px; border-radius: 30px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.toast-agregado.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .consulta-whatsapp {
   background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2);
@@ -673,6 +697,9 @@ footer p { font-size: 13px; color: var(--muted); }
   </div>
 </footer>
 
+<!-- TOAST AGREGADO -->
+<div id="toastAgregado" class="toast-agregado">✅ ¡Agregado!</div>
+
 <!-- FLOATING WA -->
 <a href="https://wa.me/5493513938817?text=Hola%20Emiliano!%20Quiero%20un%20presupuesto." class="float-wa" target="_blank" title="Escribime por WhatsApp">
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -684,6 +711,8 @@ let currentTipo = 'paredes';
 let currentManos = 2;
 let currentColor = 'Blanco roto';
 let carrito = [];
+let carritoAbierto = new Set();
+let toastTimer = null;
 
 const fmt = n => n.toLocaleString('es-AR', {style:'currency', currency:'ARS', maximumFractionDigits:0});
 const tipoLabel = {paredes:'Paredes interiores', techo:'Techo / Cielorraso', exterior:'Fachada exterior', completo:'Trabajo completo'};
@@ -858,19 +887,36 @@ function agregarAlCarrito() {
   if (!item) { actualizarPreview(); return; }
   carrito.push(item);
   renderCarrito();
+  mostrarToastAgregado();
+}
+
+function mostrarToastAgregado() {
+  const toast = document.getElementById('toastAgregado');
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
 }
 
 function irAAgregarSuperficie() {
   document.getElementById('addSurfaceBtn').scrollIntoView({behavior: 'smooth', block: 'center'});
 }
 
-function quitarDelCarrito(index) {
+function quitarDelCarrito(index, event) {
+  event.stopPropagation();
   carrito.splice(index, 1);
+  carritoAbierto.clear();
+  renderCarrito();
+}
+
+function toggleDetalleCarrito(index) {
+  if (carritoAbierto.has(index)) carritoAbierto.delete(index);
+  else carritoAbierto.add(index);
   renderCarrito();
 }
 
 function vaciarCarrito() {
   carrito = [];
+  carritoAbierto.clear();
   renderCarrito();
 
   resetDimensiones();
@@ -887,13 +933,25 @@ function renderCarrito() {
   section.style.display = 'block';
 
   document.getElementById('cart-items').innerHTML = carrito.map((item, i) => `
-    <div class="cart-item">
+    <div class="cart-item" onclick="toggleDetalleCarrito(${i})">
       <div class="cart-item-info">
         <div class="ci-tipo">${tipoLabel[item.tipo]}</div>
         <div class="ci-detalle">${item.m2.toFixed(1)} m² · ${item.manos} mano${item.manos>1?'s':''} · ${item.colorFinal}</div>
       </div>
       <div class="cart-item-price">${fmt(item.totalConMateriales)}</div>
-      <button class="cart-item-remove" onclick="quitarDelCarrito(${i})" title="Quitar">×</button>
+      <button class="cart-item-remove" onclick="quitarDelCarrito(${i}, event)" title="Quitar">×</button>
+      ${carritoAbierto.has(i) ? `
+        <div class="cart-item-detalle-full">
+          <div class="cidf-line"><span>Detalle</span><span>${item.detalle}</span></div>
+          <div class="cidf-line"><span>Estado</span><span>${estadoLabel[item.estado]}</span></div>
+          <div class="cidf-line"><span>Pintura</span><span>${pinturaLabel[item.tipoPintura]}</span></div>
+          <div class="cidf-line"><span>Precio por m²</span><span>${fmt(item.precioM2Final)}/m²</span></div>
+          <div class="cidf-line"><span>Mano de obra (20% off)</span><span><span class="precio-tachado">${fmt(item.costoManoObra)}</span>${fmt(item.costoManoObraDescontado)}</span></div>
+          <div class="cidf-line"><span>Pintura necesaria</span><span>${item.litrosCeiling} litros</span></div>
+          <div class="cidf-line"><span>Costo materiales</span><span>${fmt(item.costoPintura)}</span></div>
+          <div class="cidf-line"><span>Total con materiales</span><span>${fmt(item.totalConMateriales)}</span></div>
+        </div>
+      ` : ''}
     </div>
   `).join('');
 
