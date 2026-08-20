@@ -10,6 +10,12 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖌️</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f0f0f'/><text x='50' y='58' font-size='60' text-anchor='middle'>🖌️</text></svg>">
 
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Emi Pinta">
+
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://emildesigns.github.io/emipinta/">
 <meta property="og:title" content="Emi Pinta – Córdoba">
@@ -79,6 +85,21 @@ nav {
   transition: background .2s, transform .15s;
 }
 .nav-cta:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+
+/* ── PWA INSTALL BUTTON ── */
+.install-btn {
+  position: fixed; bottom: 20px; right: 20px; z-index: 200;
+  display: none; align-items: center; gap: 8px;
+  background: var(--yellow); color: var(--black); border: none;
+  padding: 12px 20px; border-radius: 30px;
+  font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  transition: background .2s, transform .15s;
+}
+.install-btn:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+@media (max-width: 600px) {
+  .install-btn { bottom: 16px; right: 16px; padding: 10px 16px; font-size: 13px; }
+}
 
 /* ── HERO ── */
 .hero {
@@ -488,6 +509,8 @@ footer p { font-size: 13px; color: var(--muted); }
 </head>
 <body>
 
+<button id="installBtn" class="install-btn" style="display:none">📲 Instalar app</button>
+
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">EMI<span> PINTA</span></a>
@@ -871,6 +894,7 @@ function actualizarPreview() {
       <div class="p-label">🪣 Pintura estimada necesaria</div>
       <div class="p-val">${item.litrosCeiling} litros de ${pinturaLabel[item.tipoPintura]}</div>
       <div style="font-size:12px;color:var(--muted);margin-top:6px">Costo aprox. materiales: ${fmt(item.costoPintura)}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;font-style:italic">⚠️ A modo informativo: el precio de los materiales puede variar y no ser exacto.</div>
     </div>
 
     <div class="result-total" style="margin-top:16px;background:rgba(245,200,0,0.04)">
@@ -970,6 +994,7 @@ function renderCarrito() {
       <div class="total-label">📦 Total con materiales</div>
       <div class="total-num total-num-md">${fmt(totalGeneral)}</div>
       <div class="total-sub">Mano de obra + pintura estimada de todas las superficies</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;font-style:italic">⚠️ A modo informativo: el precio de los materiales puede variar y no ser exacto.</div>
     </div>
   `;
 
@@ -991,6 +1016,36 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(a.getAttribute('href'));
     if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
   });
+});
+
+// ── PWA: REGISTRAR SERVICE WORKER ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed:', err));
+  });
+}
+
+// ── PWA: BOTÓN DE INSTALACIÓN ──
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  installBtn.style.display = 'flex';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  installBtn.style.display = 'none';
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+  installBtn.style.display = 'none';
+  deferredInstallPrompt = null;
 });
 </script>
 </body>
