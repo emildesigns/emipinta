@@ -408,6 +408,18 @@ section { padding: 100px 80px; }
 }
 .toast-agregado.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ── FOTO DE REFERENCIA ── */
+.foto-upload-area {
+  display: block; cursor: pointer;
+  border: 1.5px dashed var(--border); border-radius: 10px;
+  padding: 20px; text-align: center;
+  transition: border-color .2s, background .2s;
+}
+.foto-upload-area:hover { border-color: var(--yellow); background: rgba(245,200,0,0.04); }
+.foto-upload-area img#fotoPreview {
+  max-width: 100%; max-height: 220px; border-radius: 8px; object-fit: cover;
+}
+
 .consulta-whatsapp {
   background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2);
   border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center;
@@ -658,6 +670,21 @@ footer p { font-size: 13px; color: var(--muted); }
           <div style="font-size:48px;margin-bottom:16px">🖌️</div>
           <p style="font-size:15px">Completá los datos<br>para ver tu cotización</p>
         </div>
+      </div>
+
+      <div class="foto-referencia">
+        <div class="form-section-title" style="margin-top:20px">FOTO DEL AMBIENTE (OPCIONAL)</div>
+        <label for="fotoInput" class="foto-upload-area" id="fotoUploadArea">
+          <input type="file" id="fotoInput" accept="image/*" onchange="handleFotoUpload(event)" style="display:none">
+          <div id="fotoUploadPlaceholder">
+            <div style="font-size:26px">📷</div>
+            <p style="font-size:13px;margin-top:6px">Subí una foto del ambiente</p>
+            <p style="font-size:11px;color:var(--muted);margin-top:2px">Solo a modo de referencia visual · no se usa para calcular el precio</p>
+          </div>
+          <img id="fotoPreview" style="display:none">
+        </label>
+        <button type="button" id="fotoRemoveBtn" class="btn-secondary" style="display:none;width:100%;margin-top:8px;font-size:13px" onclick="quitarFoto(event)">Quitar foto</button>
+        <div id="fotoNotaWA" style="display:none;font-size:11px;color:var(--muted);margin-top:8px;font-style:italic">💡 Recordá reenviar esta foto manualmente en el chat de WhatsApp — no se adjunta sola.</div>
       </div>
 
       <div id="cart-section" style="display:none">
@@ -922,6 +949,36 @@ function mostrarToastAgregado() {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
 }
 
+// ── FOTO DE REFERENCIA (solo visual, no se usa para calcular precios) ──
+let fotoReferenciaDataUrl = null;
+
+function handleFotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    fotoReferenciaDataUrl = reader.result;
+    const preview = document.getElementById('fotoPreview');
+    preview.src = fotoReferenciaDataUrl;
+    preview.style.display = 'block';
+    document.getElementById('fotoUploadPlaceholder').style.display = 'none';
+    document.getElementById('fotoRemoveBtn').style.display = 'block';
+    document.getElementById('fotoNotaWA').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function quitarFoto(event) {
+  event.preventDefault();
+  fotoReferenciaDataUrl = null;
+  document.getElementById('fotoInput').value = '';
+  document.getElementById('fotoPreview').style.display = 'none';
+  document.getElementById('fotoUploadPlaceholder').style.display = 'block';
+  document.getElementById('fotoRemoveBtn').style.display = 'none';
+  document.getElementById('fotoNotaWA').style.display = 'none';
+}
+
 function irAAgregarSuperficie() {
   document.getElementById('addSurfaceBtn').scrollIntoView({behavior: 'smooth', block: 'center'});
 }
@@ -1000,7 +1057,8 @@ function renderCarrito() {
   `;
 
   const detalleWA = carrito.map(item => `- ${item.m2.toFixed(1)}m² de ${tipoLabel[item.tipo]}, ${item.manos} manos, color ${item.colorFinal}: ${fmt(item.totalConMateriales)}`).join('\n');
-  const msg = `Hola Emiliano! Coticé este presupuesto por la web:\n${detalleWA}\nTotal estimado: ${fmt(totalGeneral)}. ¿Me podés confirmar el precio?`;
+  const notaFoto = fotoReferenciaDataUrl ? '\n📷 Subí una foto del ambiente en la web, te la reenvío en este chat.' : '';
+  const msg = `Hola Emiliano! Coticé este presupuesto por la web:\n${detalleWA}\nTotal estimado: ${fmt(totalGeneral)}. ¿Me podés confirmar el precio?${notaFoto}`;
   document.getElementById('cart-wa-btn').href = `https://wa.me/5493513938817?text=${encodeURIComponent(msg)}`;
 }
 
