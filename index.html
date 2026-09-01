@@ -640,7 +640,31 @@ footer p { font-size: 13px; color: var(--muted); }
       <hr class="form-divider">
       <div class="form-section-title">DIMENSIONES</div>
 
-      <div id="dims-paredes">
+      <div id="dims-paredes4">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Pared 1 (m)</label>
+            <input type="number" id="pared1" placeholder="Ej: 4" min="0" step="0.1" oninput="actualizarPreview()">
+          </div>
+          <div class="form-group">
+            <label>Pared 2 (m)</label>
+            <input type="number" id="pared2" placeholder="Ej: 3" min="0" step="0.1" oninput="actualizarPreview()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Pared 3 (m)</label>
+            <input type="number" id="pared3" placeholder="Ej: 4" min="0" step="0.1" oninput="actualizarPreview()">
+          </div>
+          <div class="form-group">
+            <label>Pared 4 (m)</label>
+            <input type="number" id="pared4" placeholder="Ej: 3" min="0" step="0.1" oninput="actualizarPreview()">
+          </div>
+        </div>
+        <div class="disclaimer" style="margin-top:4px;margin-bottom:24px">Cargá el largo de cada una de las 4 paredes del ambiente. Si tiene menos de 4, dejá en blanco las que no correspondan.</div>
+      </div>
+
+      <div id="dims-largoancho" style="display:none">
         <div class="form-row">
           <div class="form-group">
             <label>Largo del ambiente (m)</label>
@@ -651,6 +675,9 @@ footer p { font-size: 13px; color: var(--muted); }
             <input type="number" id="ancho" placeholder="Ej: 4" min="1" step="0.1" oninput="actualizarPreview()">
           </div>
         </div>
+      </div>
+
+      <div id="dims-comun">
         <div class="form-row">
           <div class="form-group">
             <label>Altura del techo (m)</label>
@@ -880,13 +907,28 @@ function setTipo(btn) {
   document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentTipo = btn.dataset.tipo;
-  const dimsP = document.getElementById('dims-paredes');
+  const dimsP4 = document.getElementById('dims-paredes4');
+  const dimsLA = document.getElementById('dims-largoancho');
+  const dimsComun = document.getElementById('dims-comun');
   const dimsM = document.getElementById('dims-m2');
+
   if (currentTipo === 'completo') {
-    dimsM.style.display = 'block'; dimsP.style.display = 'none';
+    dimsM.style.display = 'block';
+    dimsP4.style.display = 'none';
+    dimsLA.style.display = 'none';
+    dimsComun.style.display = 'none';
+  } else if (currentTipo === 'paredes') {
+    dimsM.style.display = 'none';
+    dimsP4.style.display = 'block';
+    dimsLA.style.display = 'none';
+    dimsComun.style.display = 'block';
   } else {
-    dimsP.style.display = 'block'; dimsM.style.display = 'none';
+    dimsM.style.display = 'none';
+    dimsP4.style.display = 'none';
+    dimsLA.style.display = 'block';
+    dimsComun.style.display = 'block';
   }
+
   document.getElementById('techo-estimador').style.display = currentTipo === 'techo' ? 'block' : 'none';
   resetDimensiones();
   actualizarPreview();
@@ -912,6 +954,10 @@ function estimarTechoDesdeParedes() {
 function resetDimensiones() {
   document.getElementById('largo').value = '';
   document.getElementById('ancho').value = '';
+  document.getElementById('pared1').value = '';
+  document.getElementById('pared2').value = '';
+  document.getElementById('pared3').value = '';
+  document.getElementById('pared4').value = '';
   document.getElementById('altura').value = '2.7';
   document.getElementById('aberturas').value = '2';
   document.getElementById('m2directo').value = '';
@@ -964,23 +1010,30 @@ function computeItem() {
     m2 = m2d;
     detalle = `${m2.toFixed(1)} m² totales`;
   } else {
-    const largo = parseFloat(document.getElementById('largo').value) || 0;
-    const ancho = parseFloat(document.getElementById('ancho').value) || 0;
     const altura = parseFloat(document.getElementById('altura').value) || 2.7;
     const aberturas = parseInt(document.getElementById('aberturas').value) || 0;
     const descAbertura = aberturas * 2; // ~2m² por abertura
 
     if (currentTipo === 'paredes') {
-      const perim = 2 * (largo + ancho);
+      const p1 = parseFloat(document.getElementById('pared1').value) || 0;
+      const p2 = parseFloat(document.getElementById('pared2').value) || 0;
+      const p3 = parseFloat(document.getElementById('pared3').value) || 0;
+      const p4 = parseFloat(document.getElementById('pared4').value) || 0;
+      const perim = p1 + p2 + p3 + p4;
       m2 = Math.max(0, perim * altura - descAbertura);
-      detalle = `${largo}×${ancho}m, h:${altura}m − ${aberturas} aberturas`;
-    } else if (currentTipo === 'techo') {
-      m2 = largo * ancho;
-      detalle = `${largo}×${ancho}m = ${m2.toFixed(1)} m²`;
-    } else if (currentTipo === 'exterior') {
-      const perim = 2 * (largo + ancho);
-      m2 = Math.max(0, perim * altura - descAbertura * 1.5);
-      detalle = `${largo}×${ancho}m, h:${altura}m`;
+      detalle = `P1:${p1}m + P2:${p2}m + P3:${p3}m + P4:${p4}m (perím. ${perim.toFixed(1)}m) × h:${altura}m − ${aberturas} aberturas`;
+    } else {
+      const largo = parseFloat(document.getElementById('largo').value) || 0;
+      const ancho = parseFloat(document.getElementById('ancho').value) || 0;
+
+      if (currentTipo === 'techo') {
+        m2 = largo * ancho;
+        detalle = `${largo}×${ancho}m = ${m2.toFixed(1)} m²`;
+      } else if (currentTipo === 'exterior') {
+        const perim = 2 * (largo + ancho);
+        m2 = Math.max(0, perim * altura - descAbertura * 1.5);
+        detalle = `${largo}×${ancho}m, h:${altura}m`;
+      }
     }
   }
 
